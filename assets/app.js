@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const learningObjectiveInput = document.getElementById('learningObjective');
     const addObjectiveButton = document.getElementById('addObjective');
+    const deleteButton = document.getElementById('deleteButton'); // KENZIE 
     const objectiveList = document.getElementById('objectiveList');
 
     // Function to create a new learning objective item
@@ -24,9 +25,34 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         })
 
+        const deleteButton = document.createElement("button");
+
         listItem.appendChild(checkbox);
         listItem.appendChild(objectiveText);
         objectiveList.appendChild(listItem);
+        listItem.appendChild(deleteButton);
+
+        learningObjectiveInput.value = '';
+    }
+
+    // Function to create a new learning objective item - KENZIE
+    function deleteObjective() {
+        const text = learningObjectiveInput.value.trim();
+        if (text === '') return;
+
+        const objectiveText = document.createElement('span');
+        objectiveText.textContent = text;
+
+        fetch("/api", {
+            method: "DELETE",
+            body: JSON.stringify({
+                key: text
+            })
+        })
+
+        listItem.deleteChild(checkbox);
+        listItem.deleteChild(objectiveText);
+        objectiveList.deleteChild(listItem);
 
         learningObjectiveInput.value = '';
     }
@@ -60,6 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event listener for adding a new learning objective
     addObjectiveButton.addEventListener('click', createObjective);
+
+    deleteButton.addEventListener('click', deleteObjective);
+
 
     // You can integrate your backend API calls here
     // Example: Fetch objectives from the server and populate the list
