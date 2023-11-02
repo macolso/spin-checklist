@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const learningObjectiveInput = document.getElementById('learningObjective');
     const addObjectiveButton = document.getElementById('addObjective');
-    const deleteButton = document.getElementById('deleteButton'); // KENZIE 
+    var deleteButton = document.createElement("button");
+    deleteButton.textContent = "X";
+    deleteButton.style.marginLeft="10px";
     const objectiveList = document.getElementById('objectiveList');
 
     // Function to create a new learning objective item
@@ -25,12 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         })
 
-        const deleteButton = document.createElement("button");
-
         listItem.appendChild(checkbox);
         listItem.appendChild(objectiveText);
-        objectiveList.appendChild(listItem);
         listItem.appendChild(deleteButton);
+        objectiveList.appendChild(listItem);
 
         learningObjectiveInput.value = '';
     }

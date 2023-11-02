@@ -74,3 +74,55 @@
   "key": "test",
   "value": "false"
 }
+{
+  "key": "Nooo",
+  "value": "false"
+}
+{
+  "key": "RT",
+  "value": "false"
+}
+{
+  "key": {},
+  "value": "true"
+}
+{
+  "key": {},
+  "value": "true"
+}
+{
+  "key": {},
+  "value": "true"
+}
+{
+  "key": {},
+  "value": "false"
+}
+{
+  "key": {},
+  "value": "true"
+}
+{
+  "key": {},
+  "value": "true"
+}
+{
+  "key": {},
+  "value": "true"
+}
+{
+  "key": {},
+  "value": "true"
+}
+{
+  "key": {},
+  "value": "false"
+}
+{
+  "key": {},
+  "value": "true"
+}
+{
+  "key": "Testy",
+  "value": "false"
+}
