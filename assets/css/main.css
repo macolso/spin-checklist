@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  #app {
+    margin: 20px;
+  }
+  
+  input[type="text"] {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    font-size: 18px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  li input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  

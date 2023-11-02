@@ -1,0 +1,16 @@
+{
+  "author": "AJ ONeal <coolaj86@gmail.com> (http://coolaj86.info)",
+  "name": "Buffer",
+  "description": "API-compatible Node.JS Buffer for Ender.js (browser)",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/coolaj86/browser-buffer.git"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": ">= 0.2.0"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
