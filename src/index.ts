@@ -8,6 +8,10 @@ interface AddKey {
   value: string
 }
 
+interface DeleteRequest {
+  key: string,
+}
+
 export const handleRequest: HandleRequest = async function (request: HttpRequest): Promise<HttpResponse> {
 
   let store = Kv.openDefault()
@@ -35,7 +39,8 @@ export const handleRequest: HandleRequest = async function (request: HttpRequest
       }
       break;
     case "DELETE":
-      store.delete(request.uri)
+      let req = request.json() as DeleteRequest
+      store.delete(req.key)
       break;
     case "HEAD":
       if (!store.exists(request.uri)) {
