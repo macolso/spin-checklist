@@ -313,7 +313,7 @@ var encoder = new TextEncoder();
 var decoder = new TextDecoder();
 var handleRequest = function (request) {
     return __awaiter(this, void 0, void 0, function () {
-        var store, status, body, data, keys, res_1;
+        var store, status, body, data, keys, res_1, req;
         return __generator(this, function (_a) {
             store = Kv.openDefault();
             status = 200;
@@ -339,7 +339,8 @@ var handleRequest = function (request) {
                     }
                     break;
                 case "DELETE":
-                    store.delete(request.uri);
+                    req = request.json();
+                    store.delete(req.key);
                     break;
                 case "HEAD":
                     if (!store.exists(request.uri)) {

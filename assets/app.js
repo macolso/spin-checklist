@@ -1,15 +1,21 @@
+let TASKS = {}
+
 document.addEventListener('DOMContentLoaded', () => {
     const learningObjectiveInput = document.getElementById('learningObjective');
     const addObjectiveButton = document.getElementById('addObjective');
     var deleteButton = document.createElement("button");
     deleteButton.textContent = "X";
-    deleteButton.style.marginLeft="10px";
+    deleteButton.style.marginLeft = "10px";
     const objectiveList = document.getElementById('objectiveList');
 
     // Function to create a new learning objective item
     function createObjective() {
         const text = learningObjectiveInput.value.trim();
         if (text === '') return;
+        if (TASKS[text]) {
+            learningObjectiveInput.value = '';
+            return
+        }
 
         const listItem = document.createElement('li');
         const checkbox = document.createElement('input');
@@ -36,23 +42,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to create a new learning objective item - KENZIE
-    function deleteObjective() {
-        const text = learningObjectiveInput.value.trim();
-        if (text === '') return;
-
-        const objectiveText = document.createElement('span');
-        objectiveText.textContent = text;
+    function deleteObjective(e) {
+        console.log(e.target)
+        let task = e.target.previousSibling
+        console.log(task)
+        let checkbox = task.previousSibling
 
         fetch("/api", {
             method: "DELETE",
             body: JSON.stringify({
-                key: text
+                key: task.innerText
             })
         })
-
-        listItem.deleteChild(checkbox);
-        listItem.deleteChild(objectiveText);
-        objectiveList.deleteChild(listItem);
+        console.log("here")
+        e.target.remove()
+        task.remove()
+        checkbox.remove()
 
         learningObjectiveInput.value = '';
     }
@@ -62,13 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleObjective(event) {
         const checkbox = event.target;
         const objectiveText = checkbox.nextSibling;
-
         if (checkbox.checked) {
             objectiveText.style.textDecoration = 'line-through';
             fetch("/api", {
                 method: "POST",
                 body: JSON.stringify({
-                    key: objectiveText,
+                    key: objectiveText.innerText,
                     value: "true"
                 })
             })
@@ -98,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(objectives => {
             console.log(objectives);
+            TASKS = objectives
             let keys = Object.keys(objectives)
             keys.map(k => {
                 const learningObjectiveInput = document.getElementById('learningObjective');
@@ -111,12 +116,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const objectiveText = document.createElement('span');
                 objectiveText.textContent = k;
-                if(objectives[k] == "true") {
+                if (objectives[k] == "true") {
                     checkbox.checked = true
+                    objectiveText.style.textDecoration = 'line-through';
                 }
                 listItem.appendChild(checkbox);
                 listItem.appendChild(objectiveText);
                 objectiveList.appendChild(listItem);
+                var deleteButton = document.createElement("button");
+                deleteButton.textContent = "X";
+                deleteButton.style.marginLeft = "10px";
+                deleteButton.addEventListener('click', deleteObjective);
+                listItem.appendChild(deleteButton);
+
             })
         })
         .catch(error => console.error(error));
