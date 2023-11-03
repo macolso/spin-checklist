@@ -1,41 +1,178 @@
+@import url('https://fonts.googleapis.com/css?family=Work Sans');
+
+/* Colors */
+:root {
+  --night: #0E092D;
+  --background-color: #edeef0;
+  --white: #fff;
+  --grey: #ccc;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+  font-family: 'Work Sans', sans-serif;
+  text-align: center;
+  color: var(--night);
+  margin: 0;
+}
+
+.background {
+  width: 100%;
+  min-height: 101vh;
+  background: linear-gradient(135deg, #030304, #292B57);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 540px;
+  background-color: var(--white);
+  padding: 40px 30px 70px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 2rem;
+}
+
+h1 {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  color: var(--night);
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--background-color);
+  border-radius: 30px;
+}
+
+#learningObjective {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 12px;
+  font-size: 17px;
+  padding-left: 20px;
+}
+
+@media screen and (max-width: 400px) {
+  #addObjective {
+    padding: 15px;
+    border-radius: 0 30px 30px 0;
   }
-  
-  h1 {
-    color: #333;
-  }
-  
-  #app {
-    margin: 20px;
-  }
-  
-  input[type="text"] {
-    width: 60%;
-    padding: 10px;
-    font-size: 16px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-    align-items: center;
-  }
-  
-  li {
-    font-size: 18px;
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-  }
-  
-  li input[type="checkbox"] {
-    margin-right: 10px;
-  }
-  
+}
+
+button {
+  border: none;
+  background-color: var(--white);
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 30px;
+}
+
+button:hover {
+  background-color: var(--background-color);
+  color: var(--night);
+}
+
+#addObjective {
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 15px 50px;
+  border-radius: 30px;
+  background-image: linear-gradient(26deg, #8050E9, #f870d3 65%);
+  color: var(--white);
+  font-size: 18px;
+  transition: all .25s ease;
+}
+
+#addObjective:hover {
+  filter: brightness(.8);
+}
+
+span {
+  width: 100%;
+  text-align: left;
+}
+
+.check-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 25px;
+  cursor: pointer;
+  font-size: 22px;
+  user-select: none;
+  margin-right: 10px;
+}
+
+.check-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: var(--background-color);
+  border-radius: 5px;
+}
+
+.check-container:hover input~.checkmark {
+  background-color: var(--grey);
+}
+
+.check-container input:checked~.checkmark {
+  background-color: var(--night);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.check-container input:checked~.checkmark:after {
+  display: block;
+}
+
+.check-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--white);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  align-items: center;
+}
+
+li {
+  font-size: 18px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+}
+
+li input[type="checkbox"] {
+  margin-right: 10px;
+}

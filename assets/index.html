@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
-  <h1>Learning Checklist</h1>
-  <div id="app">
-    <input type="text" id="learningObjective" placeholder="Enter a learning objective">
-    <button id="addObjective">Add</button>
-    <ul id="objectiveList"></ul>
+  <div class="background">
+    <div class="container">
+      <h1>Learning Checklist</h1>
+      <div class="input-row">
+        <input type="text" id="learningObjective" placeholder="Enter a learning objective">
+        <button id="addObjective">Add</button>
+      </div>
+      <ul id="objectiveList"></ul>
+    </div>
+  </div>
   </div>
   <script src="/static/app.js"></script>
 </body>
+
 </html>

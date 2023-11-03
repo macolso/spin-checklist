@@ -1,135 +1,124 @@
-let TASKS = {}
-
 document.addEventListener('DOMContentLoaded', () => {
+    let TASKS = {}
+
     const learningObjectiveInput = document.getElementById('learningObjective');
     const addObjectiveButton = document.getElementById('addObjective');
-    var deleteButton = document.createElement("button");
-    deleteButton.textContent = "X";
-    deleteButton.style.marginLeft = "10px";
     const objectiveList = document.getElementById('objectiveList');
 
+    const apiRequest = (url, method, body) => {
+        return fetch(url, {
+            method: method,
+            body: JSON.stringify(body)
+        }).catch(error => console.error(error));
+    };
+
     // Function to create a new learning objective item
-    function createObjective() {
-        const text = learningObjectiveInput.value.trim();
-        if (text === '') return;
+    function createObjective(text, isMarked) {
         if (TASKS[text]) {
             learningObjectiveInput.value = '';
-            return
+            return;
         }
 
+        // Create all elements w/in an objective
         const listItem = document.createElement('li');
         const checkbox = document.createElement('input');
+        const checkboxLabel = document.createElement('label');
+        const checkmark = document.createElement("span");
+        const objectiveText = document.createElement('span');
+        const deleteButton = document.createElement("button");
+
+        // set checkbox attributes
         checkbox.type = 'checkbox';
+        checkbox.classList.add("checkbox");
         checkbox.addEventListener('change', toggleObjective);
 
-        const objectiveText = document.createElement('span');
+        checkboxLabel.classList.add("check-container");
+        checkmark.classList.add("checkmark");
+
+        // nesting checkmark and checkbox to customize appearance
+        checkboxLabel.appendChild(checkbox);
+        checkboxLabel.appendChild(checkmark);
+
+        // set ojective text attributes
+        objectiveText.classList.add("list-item-text");
         objectiveText.textContent = text;
 
-        fetch("/api", {
-            method: "POST",
-            body: JSON.stringify({
-                key: text,
-                value: "false"
-            })
-        })
+        // set delete button attributes
+        deleteButton.addEventListener('click', deleteObjective);
+        deleteButton.innerHTML = '<i class="fa fa-trash"></i>';
 
-        listItem.appendChild(checkbox);
+        apiRequest('/api', 'POST', { key: text, value: isMarked });
+
+        // build list item from checkbox, text, and delete button
+        listItem.appendChild(checkboxLabel);
         listItem.appendChild(objectiveText);
         listItem.appendChild(deleteButton);
+
+        // add item to objective list
         objectiveList.appendChild(listItem);
 
         learningObjectiveInput.value = '';
     }
 
-    // Function to create a new learning objective item - KENZIE
-    function deleteObjective(e) {
-        console.log(e.target)
-        let task = e.target.previousSibling
-        console.log(task)
-        let checkbox = task.previousSibling
+    // Function to delete a new learning objective item
+    function deleteObjective(event) {
+        const listItem = event.target.parentElement.parentElement;
+        const text = listItem.querySelector('.list-item-text').textContent;
 
-        fetch("/api", {
-            method: "DELETE",
-            body: JSON.stringify({
-                key: task.innerText
-            })
-        })
-        console.log("here")
-        e.target.remove()
-        task.remove()
-        checkbox.remove()
+        apiRequest('/api', 'DELETE', { key: text });
+
+        // remove task from the TASK and objective list
+        listItem.remove();
+        delete TASKS[text];
 
         learningObjectiveInput.value = '';
     }
 
     // Function to toggle the completion status of a learning objective
-    // find key and then send pPOST REQUEST (SEE ABOVE LINES)
     function toggleObjective(event) {
         const checkbox = event.target;
-        const objectiveText = checkbox.nextSibling;
-        if (checkbox.checked) {
-            objectiveText.style.textDecoration = 'line-through';
-            fetch("/api", {
-                method: "POST",
-                body: JSON.stringify({
-                    key: objectiveText.innerText,
-                    value: "true"
-                })
-            })
-        } else {
-            objectiveText.style.textDecoration = 'none';
-            fetch("/api", {
-                method: "POST",
-                body: JSON.stringify({
-                    key: objectiveText,
-                    value: "false"
-                })
-            })
-        }
+        const objectiveText = checkbox.parentElement.nextSibling;
+
+        objectiveText.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
+        objectiveText.style.color = checkbox.checked ? '#868496' : '#0E092D';
+
+        apiRequest('/api', 'POST', {
+            key: objectiveText.innerText,
+            value: checkbox.checked ? 'true' : 'false'
+        })
+
+        TASKS[objectiveText.innerText] = checkbox.checked;
     }
 
     // Event listener for adding a new learning objective
-    addObjectiveButton.addEventListener('click', createObjective);
+    addObjectiveButton.addEventListener('click', () => {
+        const text = learningObjectiveInput.value.trim();
+        if (text !== '') {
+            createObjective(text, "false");
+            learningObjectiveInput.value = '';
+        }
+    });
 
-    deleteButton.addEventListener('click', deleteObjective);
 
-
-    // You can integrate your backend API calls here
-    // Example: Fetch objectives from the server and populate the list
-
-    // Example:
-    fetch('/api')
+    // Fetch objectives from the server and populate the list
+    apiRequest('/api')
         .then(response => response.json())
         .then(objectives => {
-            console.log(objectives);
-            TASKS = objectives
-            let keys = Object.keys(objectives)
-            keys.map(k => {
-                const learningObjectiveInput = document.getElementById('learningObjective');
-                const objectiveList = document.getElementById('objectiveList');
+            Object.keys(objectives).forEach(k => {
+                createObjective(k, objectives[k]);
 
-                // Function to create a new learning objective item
-                const listItem = document.createElement('li');
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.addEventListener('change', toggleObjective);
+                // if objective has been completed, check it off the list
+                if (objectives[k] === "true") {
+                    // set checkmark to 'checked' state
+                    const listItem = objectiveList.lastChild;
+                    listItem.querySelector('input').checked = true;
 
-                const objectiveText = document.createElement('span');
-                objectiveText.textContent = k;
-                if (objectives[k] == "true") {
-                    checkbox.checked = true
-                    objectiveText.style.textDecoration = 'line-through';
+                    // set text to 'checked' state
+                    const objective = listItem.getElementsByClassName('list-item-text')[0]
+                    objective.style.textDecoration = 'line-through';
+                    objective.style.color = '#868496';
                 }
-                listItem.appendChild(checkbox);
-                listItem.appendChild(objectiveText);
-                objectiveList.appendChild(listItem);
-                var deleteButton = document.createElement("button");
-                deleteButton.textContent = "X";
-                deleteButton.style.marginLeft = "10px";
-                deleteButton.addEventListener('click', deleteObjective);
-                listItem.appendChild(deleteButton);
-
-            })
+            });
         })
         .catch(error => console.error(error));
 });
