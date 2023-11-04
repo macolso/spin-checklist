@@ -82,6 +82,11 @@ button:hover {
   color: var(--night);
 }
 
+button i {
+  z-index: -20;
+  pointer-events: none;
+}
+
 #addObjective {
   border: none;
   cursor: pointer;

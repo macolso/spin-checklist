@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
         objectiveText.textContent = text;
 
         // set delete button attributes
-        deleteButton.addEventListener('click', deleteObjective);
         deleteButton.innerHTML = '<i class="fa fa-trash"></i>';
+        deleteButton.addEventListener('click', deleteObjective);
 
         apiRequest('/api', 'POST', { key: text, value: isMarked });
 
@@ -62,7 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to delete a new learning objective item
     function deleteObjective(event) {
-        const listItem = event.target.parentElement.parentElement;
+        event.stopPropagation()
+        const listItem = event.target.parentElement;
         const text = listItem.querySelector('.list-item-text').textContent;
 
         apiRequest('/api', 'DELETE', { key: text });
