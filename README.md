@@ -23,3 +23,5 @@ Then (optionally), if you would like to deploy to Fermyon Cloud, make sure to in
 ```bash
 spin cloud deploy
 ```
+
+![Preview of the UI](static/spin-learning.png)
