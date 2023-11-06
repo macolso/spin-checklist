@@ -43,6 +43,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GITHUB_TOKEN }}
-          registry_reference: "${{ env.REGISTRY }}/fermyon/spin-checklist:${{ github.event.inputs.tag }}"
+          registry_reference: "${{ env.REGISTRY }}/macolso/spin-checklist:${{ github.event.inputs.tag }}"
 
 
