@@ -2,7 +2,7 @@
 
 This sample application presents users with a simple checklist rendered with Spin's static fileserver, and keeps track of the checklist's status using Spin's default Key Value store. The Spin application made of 3 components: 
 
-* `static-filserver` - Spin's static fileserver to generate the UI 
+* `static-fileserver` - Spin's static fileserver to generate the UI 
 * `api` - an API to manage to the checlist items (via Spin's router)
 * `kv-explorer` Spin's `key-value-explorer` to keep track of the checklist items and their status. 
 
