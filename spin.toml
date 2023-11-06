@@ -29,4 +29,4 @@ source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v
 id = "static-fileserver"
 files = [ { source = "assets", destination = "/" } ]
 [component.trigger]
-route = "/static/..."
+route = "/..."
