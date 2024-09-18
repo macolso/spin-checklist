@@ -12,7 +12,7 @@ To get started, please make sure you're using Spin v1.0 or later ([spin installa
 spin plugins install js2wasm --yes
 ```
 
-You can then run the appplication locally via the following command:
+You can then run the application locally via the following command:
 
 ```bash
 spin build --up
