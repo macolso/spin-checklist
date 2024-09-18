@@ -1,32 +1,44 @@
-spin_manifest_version = "1"
-authors = ["macolso <mackenzie.olson@fermyon.com>"]
-description = "A checklist that persists status with KV"
+spin_manifest_version = 2
+
+[application]
 name = "spin-checklist"
-trigger = { type = "http", base = "/" }
 version = "0.1.0"
+description = "A checklist that persists status with KV"
+authors = ["macolso <mackenzie.olson@fermyon.com>"]
 
-[[component]]
-id = "learning-checklist"
-source = "target/learning-checklist.wasm"
-exclude_files = ["**/node_modules"]
-# Gives this component access to the default key value store
-key_value_stores = ["default"]
-[component.trigger]
+[application.trigger.http]
+base = "/"
+
+[[trigger.http]]
+id = "trigger-learning-checklist"
+component = "learning-checklist"
 route = "/api/..."
-[component.build]
-command = "npm run build"
 
-[[component]]
-source = { url = "https://github.com/radu-matei/spin-kv-explorer/releases/download/v0.9.0/spin-kv-explorer.wasm", digest = "sha256:07f5f0b8514c14ae5830af0f21674fd28befee33cd7ca58bc0a68103829f2f9c" }
-id = "kv-explorer"
-# add or remove stores you want to explore here
-key_value_stores = ["default"]
-[component.trigger]
+[[trigger.http]]
+id = "trigger-kv-explorer"
+component = "kv-explorer"
 route = "/internal/kv-explorer/..."
 
-[[component]]
-source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.0.3/spin_static_fs.wasm", digest = "sha256:38bf971900228222f7f6b2ccee5051f399adca58d71692cdfdea98997965fd0d" }
-id = "static-fileserver"
-files = [ { source = "assets", destination = "/" } ]
-[component.trigger]
+[[trigger.http]]
+id = "trigger-static-fileserver"
+component = "static-fileserver"
 route = "/..."
+
+[component.learning-checklist]
+source = "target/learning-checklist.wasm"
+exclude_files = ["**/node_modules"]
+allowed_outbound_hosts = ["redis://*:*", "mysql://*:*", "postgres://*:*"]
+key_value_stores = ["default"]
+
+[component.learning-checklist.build]
+command = "npm run build"
+
+[component.kv-explorer]
+source = { url = "https://github.com/radu-matei/spin-kv-explorer/releases/download/v0.9.0/spin-kv-explorer.wasm", digest = "sha256:07f5f0b8514c14ae5830af0f21674fd28befee33cd7ca58bc0a68103829f2f9c" }
+allowed_outbound_hosts = ["redis://*:*", "mysql://*:*", "postgres://*:*"]
+key_value_stores = ["default"]
+
+[component.static-fileserver]
+source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.0.3/spin_static_fs.wasm", digest = "sha256:38bf971900228222f7f6b2ccee5051f399adca58d71692cdfdea98997965fd0d" }
+files = [{ source = "assets", destination = "/" }]
+allowed_outbound_hosts = ["redis://*:*", "mysql://*:*", "postgres://*:*"]
